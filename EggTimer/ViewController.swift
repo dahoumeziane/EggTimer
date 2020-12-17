@@ -10,11 +10,33 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    @IBOutlet weak var txtLabel: UILabel!
+    let eggTimes = ["Soft": 60 ,"Medium": 4 , "Hard": 7]
+    var secondsRemaining = 60
+    var timer = Timer()
+    var hardness = ""
+    @IBOutlet weak var progressBar: UIProgressView!
+    @IBAction func eggBtnPressed(_ sender: UIButton) {
+        timer.invalidate()
+        txtLabel.text = "How do you like your eggs ?"
+        hardness = sender.currentTitle!
+        secondsRemaining = eggTimes[hardness]!
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        
+        
+        
     }
-
-
+    @objc func updateTimer(){
+        progressBar.progress = Float((eggTimes[hardness]! - secondsRemaining)/eggTimes[hardness]!)
+        if secondsRemaining > 0 {
+            print("\(secondsRemaining) seconds.")
+            secondsRemaining -= 1
+        }else {
+            txtLabel.text = "Done !"
+        }
+        
+    }
+   
+    
 }
 
